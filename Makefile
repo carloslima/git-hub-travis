@@ -1,4 +1,4 @@
-CMD := git-hub
+CMD := git-hub-travis
 
 LOCAL_LIB := $(shell pwd)/lib
 LOCAL_LIBS = $(shell find $(LOCAL_LIB) -type f) \
@@ -6,7 +6,7 @@ LOCAL_LIBS = $(shell find $(LOCAL_LIB) -type f) \
 
 # XXX Make these vars look like git.git/Makefile style
 PREFIX ?= /usr/local
-INSTALL_LIB ?= $(shell git --exec-path)/$(CMD).d
+INSTALL_LIB ?= $(shell git --exec-path)/git-hub.d
 INSTALL_MAN ?= $(PREFIX)/share/man/man1
 
 # # Submodules
@@ -74,10 +74,8 @@ doc: doc/$(CMD).1
 $(CMD).txt: readme.asc
 	cp $< $@
 
-%.xml: %.txt
-	asciidoc -b docbook -d manpage -f doc/asciidoc.conf \
-		-agit_version=$(GITVER) $^
-	rm $<
+%.1: %.md
+	ronn --roff < $< > $@
 
 %.1: %.xml
 	xmlto -m doc/manpage-normal.xsl man $^
