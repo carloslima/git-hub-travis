@@ -10,9 +10,8 @@ INSTALL_LIB ?= $(shell git --exec-path)/$(CMD).d
 INSTALL_MAN ?= $(PREFIX)/share/man/man1
 
 # # Submodules
-# JSON=ext/json-bash/lib/json.bash
-# TEST_SIMPLE=ext/test-simple-bash/lib/test-simple.bash
-# SUBMODULE := $(JSON) $(TEST_SIMPLE)
+TEST_MORE=ext/test-more-bash/lib/test/more.bash
+SUBMODULE := $(TEST_MORE)
 
 ## XXX assert good bash
 
@@ -65,8 +64,7 @@ uninstall-doc:
 ##
 # Sanity checks:
 $(SUBMODULE):
-	@echo 'You need to run `git submodule update --init` first.' >&2
-	@exit 1
+	git submodule update --init --recursive
 
 ##
 # Build rules:
