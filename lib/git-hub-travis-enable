@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+command:travis-enable() {
+    get-args ?owner:get-user/repo:get-repo
+    require-auth
+    local user="$(get-login)"
+    user="${user:?No login set in git-hub config}"
+    token="${api_token:?No api token set in git-hub config}"
+    domain=notify.travis-ci.org
+
+    #config="$(json-dump-object user "$user" token "$token" domain "$domain")"
+    config="$(json-dump-object user "$user" token "$token")"
+
+    json="$(json-dump-object name travis active true events '[ "push" ]' config "$config")"
+    api-post "/repos/$owner/$repo/hooks" "$json"
+}
+
