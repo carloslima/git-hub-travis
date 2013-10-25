@@ -1,7 +1,7 @@
 git-hub-travis(1) -- Enable/Disable travis
 ==========================================
 
-![yada][https://travis-ci.org/carloslima/git-hub-travis.png?branch=master]
+[![Build Status](https://travis-ci.org/carloslima/git-hub-travis.png?branch=master)](https://travis-ci.org/carloslima/git-hub-travis.png?branch=master)
 
 ## SYNOPSIS
 
