@@ -41,9 +41,11 @@ If the plugin cannot find the token, it will prompt you for it.
 There are two git-hub-travis commands:
 
 `git hub travis-enable [<owner>/<repository>]`
+
 :   Turn travis on for a repository.
 
 `git hub travis-disable [<owner>/<repository>]`
+
 :   Turn travis off for a repository.
 
 ## AUTHOR
