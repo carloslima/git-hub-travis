@@ -7,7 +7,7 @@
 \fBgit\-hub\-travis\fR \- Enable/Disable travis
 .
 .P
-![yada][https://travis\-ci\.org/carloslima/git\-hub\-travis\.png?branch=master]
+ \fIhttps://travis\-ci\.org/carloslima/git\-hub\-travis\fR
 .
 .SH "SYNOPSIS"
 .
@@ -20,6 +20,9 @@ git hub travis\-disable [<repo>] # Disables travis integration
 .
 .SH "DESCRIPTION"
 This git\-hub plugin will let you enable/disable Travis continuous integration testing for any GitHub repository, from the command line\.
+.
+.P
+You will need your travis\-ci API token, which you can get here: https://travis\-ci\.org/profile/ under the profile tab\.
 .
 .SH "INSTALLATION"
 Get the source code from GitHub:
@@ -48,18 +51,31 @@ make install        # Possibly with \'sudo\'
 .
 .IP "" 0
 .
+.SH "CONFIGURATION"
+This need to specify your Travis token in one of these ways:
+.
+.IP "\(bu" 4
+Set TRAVIS_CI_API_TOKEN environment variable\.
+.
+.IP "\(bu" 4
+\fBgit hub config travis\-ci\-api\-token <token>\fR
+.
+.IP "" 0
+.
+.P
+If the plugin cannot find the token, it will prompt you for it\.
+.
 .SH "COMMANDS"
 There are two git\-hub\-travis commands:
 .
 .TP
-\fBgit hub travis\-enable [<owner>/<repository>]\fR:
-
+\fBgit hub travis\-enable [<owner>/<repository>]\fR::
 .
-.P
+.IP
 Turn travis on for a repository\.
 .
 .TP
-\fBgit hub travis\-disable [<owner>/<repository>]\fR:
+\fBgit hub travis\-disable [<owner>/<repository>]\fR::
 
 .
 .P
@@ -67,3 +83,6 @@ Turn travis off for a repository\.
 .
 .SH "AUTHOR"
 Written by Carlos Lima \fIcarlos@bpan\.org\fR
+.
+.SH "COPYRIGHT"
+Copyright 2013 Carlos Lima
