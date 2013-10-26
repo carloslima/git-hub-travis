@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -e
+#!/usr/bin/env bash -e
 
 command:travis-enable() {
     get-args ?owner:get-user/repo:get-repo
