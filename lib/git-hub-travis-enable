@@ -1,17 +1,39 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+
+set -e
 
 command:travis-enable() {
-    get-args ?owner:get-user/repo:get-repo
-    require-auth
-    local user="$(get-login)"
-    user="${user:?No login set in git-hub config}"
-    token="${api_token:?No api token set in git-hub config}"
-    domain=notify.travis-ci.org
+  get-args ?owner:get-user/repo:get-repo
+  require-auth
 
-    #config="$(json-dump-object user "$user" token "$token" domain "$domain")"
-    config="$(json-dump-object user "$user" token "$token")"
+  local user="$(get-login)"
+  user="${user:?No login set in git-hub config}"
 
-    json="$(json-dump-object name travis active true events '[ "push" ]' config "$config")"
-    api-post "/repos/$owner/$repo/hooks" "$json"
+  local token=
+  travis:get-token
+
+  config="$(json-dump-object user "$user" token "$token")"
+
+  json="$(json-dump-object name travis active true events '[ "push" ]' config "$config")"
+
+  api-post "/repos/$owner/$repo/hooks" "$json"
 }
 
+travis:get-token() {
+  if [ -n "$TRAVIS_CI_API_TOKEN" ]; then
+    token="$TRAVIS_CI_API_TOKEN"
+  else
+    token="$(get-hub-config travis-ci-api-token)"
+    [ -n "$token" ] && return
+    cat <<...
+Travis token not found in:
+
+  - TRAVIS_CI_API_TOKEN
+  - git hub config travis-ci-api-token
+
+Look at https://travis-ci.org/profile/ under the profile tab.
+
+...
+    token="$(prompt "Enter you Travis API token: ")"
+  fi
+}
