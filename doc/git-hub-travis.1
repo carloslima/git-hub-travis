@@ -21,9 +21,6 @@ git hub travis\-disable [<repo>] # Disables travis integration
 .SH "DESCRIPTION"
 This git\-hub plugin will let you enable/disable Travis continuous integration testing for any GitHub repository, from the command line\.
 .
-.P
-You will need your travis\-ci API token, which you can get here: https://travis\-ci\.org/profile/ under the profile tab\.
-.
 .SH "INSTALLATION"
 Get the source code from GitHub:
 .
@@ -52,18 +49,32 @@ make install        # Possibly with \'sudo\'
 .IP "" 0
 .
 .SH "CONFIGURATION"
-This need to specify your Travis token in one of these ways:
+Travis needs an API token\. iYour default git\-hub token should be fine\. Learn about the various tokens here: http://about\.travis\-ci\.org/blog/2013\-01\-28\-token\-token\-token/
+.
+.P
+If you want to use a differnt token look in one of these:
 .
 .IP "\(bu" 4
-Set TRAVIS_CI_API_TOKEN environment variable\.
+https://travis\-ci\.org/profile/ under the profile tab\.
 .
 .IP "\(bu" 4
-\fBgit hub config travis\-ci\-api\-token <token>\fR
+\fBgit hub token\-list\fR
 .
 .IP "" 0
 .
 .P
-If the plugin cannot find the token, it will prompt you for it\.
+Then set your token of choice in one of these ways:
+.
+.IP "\(bu" 4
+Set the TRAVIS_CI_API_TOKEN environment variable\.
+.
+.IP "\(bu" 4
+\fBgit hub config travis\-api\-token <token>\fR
+.
+.IP "" 0
+.
+.P
+If neither is set, it will default to your \fBgit hub api\-token\fR\.
 .
 .SH "COMMANDS"
 There are two git\-hub\-travis commands:
@@ -78,7 +89,7 @@ Turn travis on for a repository\.
 \fBgit hub travis\-disable [<owner>/<repository>]\fR
 .
 .IP
-Turn travis off for a repository\.
+Turn travis off for a repository\. This command actually deletes the hook entirely (rather than just deactivating it)\.
 .
 .IP "" 0
 .

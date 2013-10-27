@@ -26,15 +26,21 @@ Then run:
 
 ## CONFIGURATION
 
-You will need your travis-ci API token, which you can get here:
-https://travis-ci.org/profile/ under the profile tab.
+Travis needs an API token. iYour default git-hub token should be fine.  Learn
+about the various tokens here:
+http://about.travis-ci.org/blog/2013-01-28-token-token-token/
 
-You need to specify your Travis token in one of these ways:
+If you want to use a differnt token look in one of these:
 
-* Set TRAVIS_CI_API_TOKEN environment variable.
-* `git hub config travis-ci-api-token <token>`
+* https://travis-ci.org/profile/ under the profile tab.
+* `git hub token-list`
 
-If the plugin cannot find the token, it will prompt you for it.
+Then set your token of choice in one of these ways:
+
+* Set the TRAVIS_CI_API_TOKEN environment variable.
+* `git hub config travis-api-token <token>`
+
+If neither is set, it will default to your `git hub api-token`.
 
 ## COMMANDS
 

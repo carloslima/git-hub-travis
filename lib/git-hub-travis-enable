@@ -20,20 +20,12 @@ command:travis-enable() {
 }
 
 travis:get-token() {
-  if [ -n "$TRAVIS_CI_API_TOKEN" ]; then
-    token="$TRAVIS_CI_API_TOKEN"
+  if [ -n "$GIT_HUB_TRAVIS_API_TOKEN" ]; then
+    token="$GIT_HUB_TRAVIS_API_TOKEN"
   else
-    token="$(get-hub-config travis-ci-api-token)"
+    token="$(get-hub-config travis-api-token)"
     [ -n "$token" ] && return
-    cat <<...
-Travis token not found in:
-
-  - TRAVIS_CI_API_TOKEN
-  - git hub config travis-ci-api-token
-
-Look at https://travis-ci.org/profile/ under the profile tab.
-
-...
-    token="$(prompt "Enter you Travis API token: ")"
+    token="$(get-hub-config api-token)"
+    [ -n "$token" ] || die "Can't find a Travis API Token"
   fi
 }
