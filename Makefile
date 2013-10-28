@@ -71,17 +71,8 @@ $(SUBMODULE):
 .PHONY: doc
 doc: doc/$(CMD).1
 
-$(CMD).txt: readme.asc
-	cp $< $@
-
 %.1: %.md
 	ronn --roff < $< > $@
-
-%.1: %.xml
-	xmlto -m doc/manpage-normal.xsl man $^
-
-doc/%.1: %.1
-	mv $< $@
 
 ##
 # Undocumented dev rules
