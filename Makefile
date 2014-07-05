@@ -69,24 +69,10 @@ $(SUBMODULE):
 ##
 # Build rules:
 .PHONY: doc
-doc: doc/$(CMD).1
+doc: doc/$(CMD).1 ReadMe.pod
 
-%.1: %.md
-	ronn --roff < $< > $@
+%.1: %.swim
+	swim --to=man $< > $@
 
-##
-# Undocumented dev rules
-
-# Install using symlinks so repo changes can be tested live
-.PHONY: dev-install dev-test dev-test-reset check-dev-install
-dev-install:
-	ln -fs $(LOCAL_LIBS) $(INSTALL_LIB)
-
-# Run a bunch of live tests. Make sure this thing really works. :)
-dev-test:
-	bash test/dev-test/all_commands.t
-	bash test/dev-test/each.t
-
-# Run this to reset if `make dev-test` fails.
-dev-test-reset: check-dev-install
-	GIT_HUB_TEST_RESET=1 bash test/dev-test/all_commands.t
+ReadMe.pod: doc/$(CMD).swim
+	swim --to=pod --complete=1 --wrap=1 $< > $@
