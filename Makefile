@@ -1,19 +1,15 @@
 NAME = git-hub-travis
+LIB = lib
+LIBS = $(shell find $(LIB) -type f) \
+	$(shell find $(LIB) -type l)
 DOC = doc/$(NAME).swim
 MAN = $(MAN1)/$(NAME).1
 MAN1 = man/man1
-
-LOCAL_LIB = $(shell pwd)/lib
-LOCAL_LIBS = $(shell find $(LOCAL_LIB) -type f) \
-	    $(shell find $(LOCAL_LIB) -type l)
 
 # XXX Make these vars look like git.git/Makefile style
 PREFIX ?= /usr/local
 INSTALL_LIB ?= $(shell git --exec-path)/git-hub.d
 INSTALL_MAN ?= $(PREFIX)/share/man/man1
-
-# # Submodules
-TEST_MORE = ext/test-more-bash/lib/test/more.bash
 
 ##
 # User targets:
@@ -23,7 +19,6 @@ help:
 	@echo 'Makefile targets:'
 	@echo ''
 	@echo 'test       Run all tests'
-	@echo 'doc        Rebuild the docs'
 	@echo 'install    Install $(NAME)'
 	@echo 'uninstall  Uninstall $(NAME)'
 
@@ -39,7 +34,7 @@ install: install-lib install-doc
 
 install-lib: $(INSTALL_LIB)
 	install -C -d -m 0755 $(INSTALL_LIB)/
-	install -C -m 0755 $(LOCAL_LIBS) $(INSTALL_LIB)/
+	install -C -m 0755 $(LIBS) $(INSTALL_LIB)/
 
 install-doc:
 	install -C -d -m 0755 $(INSTALL_MAN)
