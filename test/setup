@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-BPANLIB="$(
+BASHLIB="$(
   shopt -s nullglob globstar
   set -- $PWD/**/{bin,lib}
   IFS=':'; echo "$*"
 )"
-PATH="$BPANLIB:$PATH"
+PATH="$BASHLIB:$PATH"
 
-source bpan :std
+source bash+ :std
