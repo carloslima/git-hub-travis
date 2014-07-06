@@ -1,6 +1,9 @@
-CMD := git-hub-travis
+NAME = git-hub-travis
+DOC = doc/$(NAME).swim
+MAN = $(MAN1)/$(NAME).1
+MAN1 = man/man1
 
-LOCAL_LIB := $(shell pwd)/lib
+LOCAL_LIB = $(shell pwd)/lib
 LOCAL_LIBS = $(shell find $(LOCAL_LIB) -type f) \
 	    $(shell find $(LOCAL_LIB) -type l)
 
@@ -10,38 +13,28 @@ INSTALL_LIB ?= $(shell git --exec-path)/git-hub.d
 INSTALL_MAN ?= $(PREFIX)/share/man/man1
 
 # # Submodules
-TEST_MORE=ext/test-more-bash/lib/test/more.bash
-SUBMODULE := $(TEST_MORE)
-
-## XXX assert good bash
-
-##
-# Make sure we have 'git' and it works OK.
-ifeq ($(shell which git),)
-    $(error 'git' is not installed on this system)
-endif
-GITVER ?= $(word 3,$(shell git --version))
+TEST_MORE = ext/test-more-bash/lib/test/more.bash
 
 ##
 # User targets:
-.PHONY: default help test
 default: help
 
 help:
-	@echo 'Makefile rules:'
+	@echo 'Makefile targets:'
 	@echo ''
 	@echo 'test       Run all tests'
-	@echo 'install    Install $(CMD)'
-	@echo 'uninstall  Uninstall $(CMD)'
+	@echo 'doc        Rebuild the docs'
+	@echo 'install    Install $(NAME)'
+	@echo 'uninstall  Uninstall $(NAME)'
 
-test: $(SUBMODULE)
+.PHONY: test
+test:
 ifeq ($(shell which prove),)
 	@echo '`make test` requires the `prove` utility'
 	@exit 1
 endif
 	prove $(PROVE_OPTIONS) test/
 
-.PHONY: install install-lib install-doc
 install: install-lib install-doc
 
 install-lib: $(INSTALL_LIB)
@@ -50,29 +43,25 @@ install-lib: $(INSTALL_LIB)
 
 install-doc:
 	install -C -d -m 0755 $(INSTALL_MAN)
-	install -C -m 0644 doc/$(CMD).1 $(INSTALL_MAN)
+	install -C -m 0644 doc/$(NAME).1 $(INSTALL_MAN)
 
-.PHONY: uninstall uninstall-lib uninstall-doc
 uninstall: uninstall-lib uninstall-doc
 
 uninstall-lib:
 	rm -fr $(INSTALL_LIB)
 
 uninstall-doc:
-	rm -f $(INSTALL_MAN)/$(CMD).1
-
-##
-# Sanity checks:
-$(SUBMODULE):
-	git submodule update --init --recursive
+	rm -f $(INSTALL_MAN)/$(NAME).1
 
 ##
 # Build rules:
-.PHONY: doc
-doc: doc/$(CMD).1 ReadMe.pod
+doc: $(MAN) ReadMe.pod
 
-%.1: %.swim
+$(MAN1)/%.1: doc/%.swim swim-check
 	swim --to=man $< > $@
 
-ReadMe.pod: doc/$(CMD).swim
+ReadMe.pod: $(DOC) swim-check
 	swim --to=pod --complete=1 --wrap=1 $< > $@
+
+swim-check:
+	@# Need to assert Swim and Swim::Plugin::badge are installed
